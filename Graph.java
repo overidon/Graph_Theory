@@ -1,4 +1,81 @@
 public class Graph {
+	
+	
+void shiftSystemLeft(boolean[][] arr, ArrayList<Integer> crush){
+
+    int L = arr.length;
+    int count = 0;
+    int S = crush.size();
+
+    while (count < S) {
+        int crusher = crush.get(count);
+
+        for (int r = 0; r < L; r++) {
+            for (int c = crusher - count; c < L -1; c++) {
+                arr[r][c] = arr[r][c + 1];
+                arr[r][c + 1] = false;
+            }
+        }
+        count++;
+    }
+}
+
+void shiftSystemUp(boolean[][] arr, ArrayList<Integer> crush){
+
+    boolean debug = true;
+    int L = arr.length;
+    int count = 0;
+    int S = crush.size();
+
+    while (count < S) {
+        int crusher = crush.get(count);
+
+        if ( debug) System.out.println("The crusher is: " + crusher);
+        for (int c = 0; c < L; c++) {
+            for (int r = crusher - count; r < L -1; r++) {
+                arr[r][c] = arr[r + 1][c];
+                arr[r + 1][c] = false;
+            }
+        }
+        count++;
+    }
+}
+
+// this merges two rows to be one 
+// and then makes the rowB all false 
+void squishRow(boolean[][] arr, int rowA, int rowB) {
+
+    int L = arr.length;
+    for (int c = 0; c < L; c++){
+        
+        // what is the value below one unit!
+        boolean valBot = arr[rowB][c];
+        
+        // any true value below will override the top value
+        arr[rowA][c] |= valBot;
+        
+        if (c == rowA) arr[rowA][c] = false;
+        
+        arr[rowB][c] = false;
+    }
+    
+}
+
+void squishCol(boolean[][] arr, int colA, int colB) {
+
+    int L = arr.length;
+    for (int row = 0; row < arr.length; row++){
+        boolean valBot = arr[row][colB];
+        arr[row][colA] |= valBot;
+        if (row == colA){
+            arr[row][colA] = false;
+        }
+        arr[row][colB] = false;
+    }
+
+}
+    
+   
    
   static void displayAdjMatrix(boolean [][] arr) {
 
