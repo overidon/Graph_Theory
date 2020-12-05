@@ -1,5 +1,64 @@
 public class Graph {
 	
+  /*
+  	12/5/2020 -> Added cleanMerge
+	This function will merge patterns that share any connections in their HashSet of node indices
+	The goal is to clean the list of patterns to only have complete structures. 
+	After running this function the only patterns that should remain are ones that do not share any nodes. 
+	Any other patterns would be merged into a pattern. This can either make a pattern larger of have the 
+	effect of 'removing' duplicates. 
+  */
+  void cleanMerge(ArrayList<Pattern> patterns, int index) {
+
+	boolean debug = false;
+
+	int S = patterns.size(); 
+
+	if ( index >= S) return;
+
+
+	Pattern target = patterns.get(index);
+	Pattern other = null; 
+
+
+	if (debug)System.out.println("The size of the patterns list is: " + S);
+	if (debug) System.out.println("Pattern Index is: " + index);
+
+	HashSet<Integer> system = target.P; 
+
+	// this is my list of connections.... for the pattern
+	if (debug) System.out.println("#### SYSTEM: " + system);
+
+	int tag = -1;
+
+	for (int i = index + 1; i < S; i++) {
+
+		Pattern otherPattern = patterns.get(i);
+		HashSet<Integer> otherSystem = otherPattern.P; 
+
+		for (Integer k: otherSystem) {
+			if ( system.contains(k)) {
+				tag = i;
+				i = S;
+				other = otherPattern;
+				break;
+
+			}
+		}
+	}
+
+	if (debug) System.out.println("#### The tag is: " + tag);
+
+	if ( tag != -1) {
+		target.P.addAll(other.P);
+		patterns.remove(tag);
+		cleanMerge(patterns, index); 
+	} else {
+		cleanMerge(patterns, index + 1); 
+	}
+
+	// end of the cleanMerge method 
+	}
 	
 void shiftSystemLeft(boolean[][] arr, ArrayList<Integer> crush){
 
